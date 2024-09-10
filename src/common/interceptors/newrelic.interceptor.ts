@@ -14,7 +14,6 @@ import {
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
       return newrelic.startWebTransaction(context.getHandler().name, function () {
         const transaction = newrelic.getTransaction();
-        // const now = Date.now();
         return next.handle().pipe(
           tap(() => {
             return transaction.end();

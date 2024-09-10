@@ -3,9 +3,8 @@ import { ConfigModule } from '@nestjs/config';
 import { RedisCacheModule } from './database/redis/redis-cache.module';
 import { MongoModule } from './database/mongo/mongo.module';
 import { DatabaseModule } from './database/postgres/postgres.module';
-import { CacheModule } from '@nestjs/cache-manager';
 import { RequestMiddleware } from './common/middlewares/logger/request-logger.middleware';
-import { ResponseMiddleware } from './common/middlewares/logger/response-logger.middleware';
+import { ApplicationModule } from './modules/application/application.module';
 
 @Module({
   imports: [
@@ -17,7 +16,7 @@ import { ResponseMiddleware } from './common/middlewares/logger/response-logger.
     MongoModule,
     RedisCacheModule,
     DatabaseModule,
-    CacheModule
+    ApplicationModule,
   ],
   controllers: [],
   providers: [
@@ -26,7 +25,7 @@ import { ResponseMiddleware } from './common/middlewares/logger/response-logger.
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(RequestMiddleware, ResponseMiddleware)
+      .apply(RequestMiddleware)
       .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }

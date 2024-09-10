@@ -11,8 +11,8 @@ export class CustomResponseBody<
   message: string;
   data: T;
 
-  constructor(message = 'success', body: T = {} as T) {
+  constructor(message = 'Success', data: T = {} as T) {
     this.message = message;
-    this.data = body;
+    this.data = data;
   }
 }

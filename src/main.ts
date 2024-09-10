@@ -8,6 +8,7 @@ import { NewrelicInterceptor } from './common/interceptors/newrelic.interceptor'
 import { ConfigService } from '@nestjs/config';
 import { ServerConfig, ServerConfigName } from './configs/server.config';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
+import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 
 async function bootstrap() {
   const logger = new Logger();
@@ -36,13 +37,16 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const serverConfig = configService.getOrThrow<ServerConfig>(ServerConfigName);
   app.useGlobalInterceptors(new NewrelicInterceptor());
+  app.useGlobalInterceptors(new ResponseInterceptor);
+
   try {
     await app.listen(serverConfig.port,serverConfig.host||'0.0.0.0');
     logger.log(
-      `${process.env.APP_NAME} Microservice Application is running on: ${await app.getUrl()}/api`,
+      `${process.env.APP_NAME || 'NestJs Scaffold'} Microservice Application is running on: ${await app.getUrl()}/api`,
     );  } catch (error) {
     logger.error(`Error starting the application: ${error}`);
   }  
+  
 
 }
 bootstrap();

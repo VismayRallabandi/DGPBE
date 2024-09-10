@@ -6,16 +6,11 @@ export class RequestMiddleware implements NestMiddleware {
 
   use(req: any, res: any, next: any): void {
     const { method, originalUrl, body, query, params } = req;
-    const payload = {
-      queryParams: query && Object.keys(query).length > 0 ? query : undefined,
-      pathParams: params && Object.keys(params).length > 0 ? params : undefined,
-      body: body && Object.keys(body).length > 0 ? body : undefined,
-    };
     const start = Date.now();
-    this.logger.log({
+    this.logger.debug({
       method: method,
       url: originalUrl,
-      payload: payload,
+      payload: {},
     });
     res.on('finish', () => {
       const { statusCode } = res;
@@ -24,7 +19,7 @@ export class RequestMiddleware implements NestMiddleware {
       const timestamp = new Date().toISOString();
       const logDetails = {
         log: log,
-        payload: payload,
+        payload: {},
         timestamp: timestamp,
       };
       if (statusCode >= 400) {
