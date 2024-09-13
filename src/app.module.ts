@@ -5,6 +5,8 @@ import { MongoModule } from './database/mongo/mongo.module';
 import { DatabaseModule } from './database/postgres/postgres.module';
 import { RequestMiddleware } from './common/middlewares/logger/request-logger.middleware';
 import { ApplicationModule } from './modules/application/application.module';
+import { KafkaModule } from './providers/infra/kafka/kafka.module';
+import { EventConsumerModule } from './events/consumers/consumer.module';
 
 @Module({
   imports: [
@@ -17,6 +19,7 @@ import { ApplicationModule } from './modules/application/application.module';
     RedisCacheModule,
     DatabaseModule,
     ApplicationModule,
+    EventConsumerModule,
   ],
   controllers: [],
   providers: [
