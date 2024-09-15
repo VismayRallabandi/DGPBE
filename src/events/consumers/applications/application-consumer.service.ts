@@ -1,22 +1,24 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
+import { DEV_SCAFFOLD_CONSUMER_GROUP } from 'src/common/constants/kafka.constants';
+import { KafkaTopicsEnum } from 'src/common/enums/kafka.enum';
+import { ApplicationService } from 'src/modules/application/application.service';
 import { ConsumerService } from 'src/providers/infra/kafka/consumer.service';
+import { ApplicationEventHandler } from './application-event.handler';
 
 @Injectable()
 export class ApplicationConsumerService implements OnModuleInit {
-  constructor(private readonly _consumer: ConsumerService) {}
+  constructor(private readonly _consumer: ConsumerService
+    ,private readonly _applicationService: ApplicationService,
+    private readonly _applicationEventHandler: ApplicationEventHandler
+  ) {}
 
   async onModuleInit() {
     this._consumer.addConsumer(
-      'dev-scaffold-consumer-group',
-      { topics: ['dev-scaffold-topic'] },
+      DEV_SCAFFOLD_CONSUMER_GROUP,
+      { topics: [KafkaTopicsEnum.DevScaffoldTopic] },
       {
         eachMessage: async ({ topic, partition, message }) => {
-          console.log({
-            source: 'create-consumer',
-            message: message.value.toString(),
-            partition: partition.toString(),
-            topic: topic.toString(),
-          });
+          this._applicationEventHandler.handleEvent({key: message.key.toString(), value: JSON.parse(message.value.toString())});
         },
       },
     );

@@ -1,7 +1,7 @@
-import { Injectable, HttpException, Inject, Logger } from '@nestjs/common';
-import { applicationEventKafkaTopicMap as topicEventMap } from './application-producer.constants';
+import { Injectable, Logger } from '@nestjs/common';
 import { BaseProducerService } from '../base-producer.service';
 import { ApplicationEventInterface } from 'src/modules/application/interfaces/application-event.interface';
+import { applicationEventKafkaTopicMap as topicEventMap} from 'src/common/constants/kafka.constants';
 
 @Injectable()
 export class ApplicationEventProducerService extends BaseProducerService{

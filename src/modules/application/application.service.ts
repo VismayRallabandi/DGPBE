@@ -3,9 +3,9 @@ import { CreateApplicationDto } from './dto/create-application.dto';
 import { WWApplication } from './entities/application.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ProducerService } from 'src/providers/infra/kafka/producer.service';
 import { ApplicationEventProducerService } from 'src/events/producers/applications/application-producer.service';
-import { ApplicationEventEnum } from './enums/application-event.enum';
+import { ApplicationEventTypes } from 'src/common/enums/application-event.enums';
+import { ApplicationEventInterface } from './interfaces/application-event.interface';
 
 @Injectable()
 export class ApplicationService {
@@ -23,7 +23,7 @@ export class ApplicationService {
 
   async findAll() {
     this.producer.publishEvent({
-      key : ApplicationEventEnum.Created,
+      key : ApplicationEventTypes.Created,
       value: {
         name: 'test',
         description: 'test'
@@ -38,5 +38,9 @@ export class ApplicationService {
       throw new HttpException('User Not Found', 404);
     }
     return applicationData;
+  }
+
+  async processEvent(event : ApplicationEventInterface) {
+    console.log(event.key,event.value);
   }
 }
