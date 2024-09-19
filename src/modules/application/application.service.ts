@@ -13,6 +13,7 @@ export class ApplicationService {
     @InjectRepository(WWApplication)
     private readonly applicationRepository: Repository<WWApplication>,
     //private readonly _kafka: ProducerService
+    @Inject(ApplicationEventProducerService) // Good practice to add the inject decorator in the constructor to make it clear that the service is injected as once javascript is compiled it discovers this provider as a object instance
     private readonly producer: ApplicationEventProducerService
   ) {}
   async create(createApplicationDto: CreateApplicationDto) {

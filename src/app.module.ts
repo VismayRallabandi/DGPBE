@@ -7,6 +7,7 @@ import { RequestMiddleware } from './common/middlewares/logger/request-logger.mi
 import { ApplicationModule } from './modules/application/application.module';
 import { KafkaModule } from './providers/infra/kafka/kafka.module';
 import { EventConsumerModule } from './events/consumers/consumer.module';
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   imports: [
@@ -20,6 +21,18 @@ import { EventConsumerModule } from './events/consumers/consumer.module';
     DatabaseModule,
     ApplicationModule,
     EventConsumerModule,
+    LoggerModule.forRoot({
+      pinoHttp: {
+        transport: {
+          target: 'pino-pretty',
+          options: {
+            singleLine: true
+          }
+        },
+        quietReqLogger: true,  // Disable automatic request logging
+        autoLogging: false, // Disable auto logging of requests
+      },
+    }),
   ],
   controllers: [],
   providers: [
