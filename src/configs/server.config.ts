@@ -13,13 +13,7 @@ export interface ServerConfig {
 
 export default registerAs(ServerConfigName, () => ({
   environment: process.env.ENV || 'development',
-  port: parseInt(process.env.PORT || '3000'),
+  port: parseInt(process.env.APP_PORT || '3000'),
   timezone: process.env.TZ,
   host: process.env.APP_ADDRESS,
 }));
-
-
-export const appConfig = {
-  appPort: process.env.APP_PORT,
-  appHost: process.env.APP_ADDRESS,
-};

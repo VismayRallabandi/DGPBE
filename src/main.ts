@@ -1,4 +1,4 @@
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
@@ -9,16 +9,21 @@ import { ConfigService } from '@nestjs/config';
 import { ServerConfig, ServerConfigName } from './configs/server.config';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
+import compress from '@fastify/compress';  // Use the correct package
+import { Logger } from 'nestjs-pino';
+
 
 async function bootstrap() {
-  const logger = new Logger();
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter({caseSensitive: false, ignoreTrailingSlash: true}),
     { bufferLogs: true
     }
   );
+  const logger = app.get(Logger);
+  app.useLogger(logger);
   app.flushLogs();
+  app.register(compress);
   const isProduction = process.env.envirenment === 'production';
   await app.getHttpAdapter().getInstance().register(fastifyCookie,{
     parseOptions: {
