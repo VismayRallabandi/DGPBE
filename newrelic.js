@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 /**
  * New Relic agent configuration.
  *
@@ -9,19 +9,18 @@ exports.config = {
   /**
    * Array of application names.
    */
-  app_name: [process.env.NEW_RELIC_APP_NAME],
+  app_name: ['My Application'],
   /**
    * Your New Relic license key.
    */
-  license_key: process.env.NEW_RELIC_LICENSE_KEY,
+  license_key: 'license key here',
   logging: {
     /**
      * Level at which to log. 'trace' is most useful to New Relic when diagnosing
      * issues with the agent, 'info' and higher will impose the least overhead on
      * production applications.
      */
-    enabled: false,
-    level: 'off',
+    level: 'info'
   },
   /**
    * When true, all request headers except for those listed in attributes.exclude
@@ -48,7 +47,7 @@ exports.config = {
       'response.headers.authorization',
       'response.headers.proxyAuthorization',
       'response.headers.setCookie*',
-      'response.headers.x*',
-    ],
-  },
-};
+      'response.headers.x*'
+    ]
+  }
+}

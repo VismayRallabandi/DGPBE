@@ -1,4 +1,7 @@
 ## Description
+Digital Gatepass
+To implement a standard and sustainable digitized process across all sites in order to secure assets and ensure that they are accounted for. 
+
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
