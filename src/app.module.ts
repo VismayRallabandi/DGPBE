@@ -1,12 +1,13 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import ServerConfig from './configs/server.config';
 import { RedisCacheModule } from './database/redis/redis-cache.module';
-import { MongoModule } from './database/mongo/mongo.module';
+//import { MongoModule } from './database/mongo/mongo.module';
 import { DatabaseModule } from './database/postgres/postgres.module';
 import { RequestMiddleware } from './common/middlewares/logger/request-logger.middleware';
-import { ApplicationModule } from './modules/application/application.module';
-import { KafkaModule } from './providers/infra/kafka/kafka.module';
-import { EventConsumerModule } from './events/consumers/consumer.module';
+//import { ApplicationModule } from './modules/application/application.module';
+//import { KafkaModule } from './providers/infra/kafka/kafka.module';
+//import { EventConsumerModule } from './events/consumers/consumer.module';
 import { LoggerModule } from 'nestjs-pino';
 
 @Module({
@@ -15,12 +16,11 @@ import { LoggerModule } from 'nestjs-pino';
       cache: true,
       isGlobal: true,
       envFilePath: getEnvFilePath(),
+      load: [ServerConfig],
     }),
-    MongoModule,
+    //MongoModule,
     RedisCacheModule,
     DatabaseModule,
-    ApplicationModule,
-    EventConsumerModule,
     LoggerModule.forRoot({
       pinoHttp: {
         transport: {
