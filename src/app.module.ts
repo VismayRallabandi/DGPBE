@@ -8,8 +8,11 @@ import { RequestMiddleware } from './common/middlewares/logger/request-logger.mi
 //import { ApplicationModule } from './modules/application/application.module';
 //import { KafkaModule } from './providers/infra/kafka/kafka.module';
 //import { EventConsumerModule } from './events/consumers/consumer.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggerModule } from 'nestjs-pino';
-
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { FormModule } from './form/form.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -19,6 +22,17 @@ import { LoggerModule } from 'nestjs-pino';
       load: [ServerConfig],
     }),
     //MongoModule,
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT),
+      username: process.env.POSTGRES_USER,
+      password: process.env.POSTGRES_PASSWORD,
+      database: process.env.POSTGRES_DBNAME,
+      entities: [],
+      synchronize: true, // Be careful with this in production
+    }),
+    FormModule, // This will be your form module
     RedisCacheModule,
     DatabaseModule,
     LoggerModule.forRoot({
@@ -34,9 +48,8 @@ import { LoggerModule } from 'nestjs-pino';
       },
     }),
   ],
-  controllers: [],
-  providers: [
-  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
