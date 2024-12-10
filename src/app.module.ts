@@ -13,6 +13,8 @@ import { LoggerModule } from 'nestjs-pino';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { FormModule } from './form/form.module';
+import { Form } from './form/entity/form.entity';
+import { Item } from './form/entity/item.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -29,7 +31,7 @@ import { FormModule } from './form/form.module';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DBNAME,
-      entities: [],
+      entities: [Form, Item],
       synchronize: true, // Be careful with this in production
     }),
     FormModule, // This will be your form module
