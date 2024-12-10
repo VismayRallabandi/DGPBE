@@ -12,9 +12,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggerModule } from 'nestjs-pino';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { FormModule } from './form/form.module';
-import { Form } from './form/entity/form.entity';
-import { Item } from './form/entity/item.entity';
+import { FormModule } from './providers/internal/form/form.module';
+import { Form } from './providers/internal/form/entity/form.entity';
+import { Item } from './providers/internal/form/entity/item.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({
