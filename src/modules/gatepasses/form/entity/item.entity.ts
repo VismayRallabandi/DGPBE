@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
 import { Form } from "./form.entity";
 
 @Entity()
@@ -18,6 +18,10 @@ export class Item {
     @Column()
     modelName: string; 
 
-    @ManyToOne(() => Form, form => form.items)
+    @ManyToOne(() => Form, form => form.items, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'formId' })
     form: Form;
+
+    @Column()
+    formId: number;
 }

@@ -15,7 +15,7 @@ const postgresConfig = {
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
   migrations: ['dist/database/migrations/*{.ts,.js}'],
   autoLoadEntities: true,
-  synchronize: false,
+  synchronize: true,
 };
 
 export default registerAs(

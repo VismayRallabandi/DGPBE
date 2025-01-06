@@ -1,7 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import ServerConfig from './configs/server.config';
-import { RedisCacheModule } from './database/redis/redis-cache.module';
 //import { MongoModule } from './database/mongo/mongo.module';
 import { DatabaseModule } from './database/postgres/postgres.module';
 import { RequestMiddleware } from './common/middlewares/logger/request-logger.middleware';
@@ -12,9 +11,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggerModule } from 'nestjs-pino';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { FormModule } from './providers/internal/form/form.module';
-import { Form } from './providers/internal/form/entity/form.entity';
-import { Item } from './providers/internal/form/entity/item.entity';
+import { FormModule } from './modules/gatepasses/form/form.module';
+import { Form } from './modules/gatepasses/form/entity/form.entity';
+import { Item } from './modules/gatepasses/form/entity/item.entity';
+import { User } from './modules/users/auth/entity/user.entity';
+import { AuthKey } from './modules/users/auth/entity/auth-key.entity';
+import { AuthModule } from './modules/users/auth/auth.module';
+import { Locations } from './modules/gatepasses/form/entity/locations.entity';
+import { Vendors } from './modules/gatepasses/form/entity/vendors.entity';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -31,11 +36,11 @@ import { Item } from './providers/internal/form/entity/item.entity';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DBNAME,
-      entities: [Form, Item],
+      entities: [Form, Item, User, AuthKey,Locations,Vendors],
       synchronize: true, // Be careful with this in production
     }),
+    AuthModule,
     FormModule, // This will be your form module
-    RedisCacheModule,
     DatabaseModule,
     LoggerModule.forRoot({
       pinoHttp: {

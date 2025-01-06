@@ -17,11 +17,11 @@ export class Form{
     @Column({ default: () => 'CURRENT_TIMESTAMP::time' })
     itime: string;
 
-    @Column()
-    date: string;
+    @Column({ nullable: true })
+    date?: string | null;
 
-    @Column()
-    time: string;
+    @Column({ nullable: true })
+    time?: string | null;
 
     @Column()
     otherAddress: string;
@@ -29,14 +29,14 @@ export class Form{
     @Column()
     returnable: boolean;
 
-    @Column()
-    securityPerson: string;
+    @Column({ nullable: true })
+    securityPerson?: string | null;
 
     @OneToMany(() => Item, (item) => item.form, { cascade: true })
     items: Item[]
 
-    @Column()
-    remarks: string;
+    @Column({ nullable: true })
+    remarks?: string | null;
 
     @Column()
     requesterName: string;
@@ -44,9 +44,12 @@ export class Form{
     @Column({ nullable: true })
     dateofReturn: string;
 
-    @Column({ default: false })
+    @Column({ type: 'boolean', default: false })
     approved: boolean;
 
     @Column({ default: 'vismay.rallabandi1023@gmail.com' })
-    signator: string;
+    communityManager: string;
+
+    @Column({type: 'boolean',default: false})
+    completed: boolean;
 }

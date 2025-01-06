@@ -4,7 +4,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { fastifyCookie } from '@fastify/cookie';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
-import { NewrelicInterceptor } from './common/interceptors/newrelic.interceptor';
 import { ConfigService } from '@nestjs/config';
 import { ServerConfig, ServerConfigName } from './configs/server.config';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
@@ -30,7 +29,11 @@ async function bootstrap() {
     parseOptions: {
       secure: isProduction,
     }});
-  app.enableCors();
+  app.enableCors({
+    origin: 'http://localhost:4000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
   const config = new DocumentBuilder()
     .setTitle(process.env.APP_NAME || 'NestJs Scaffold')
     .setDescription(process.env.APP_DESCRIPTION || 'This is the NestJs Scaffold Repository')
@@ -42,7 +45,6 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter());  
   const configService = app.get(ConfigService);
   const serverConfig = configService.getOrThrow<ServerConfig>(ServerConfigName);
-  app.useGlobalInterceptors(new NewrelicInterceptor());
   app.useGlobalInterceptors(new ResponseInterceptor);
 
   try {
