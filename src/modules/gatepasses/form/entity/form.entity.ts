@@ -52,4 +52,7 @@ export class Form{
 
     @Column({type: 'boolean',default: false})
     completed: boolean;
+
+    @Column({ nullable: true })
+    invoiceNumber?: string | null;
 }

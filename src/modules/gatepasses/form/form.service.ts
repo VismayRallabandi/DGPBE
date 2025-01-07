@@ -77,6 +77,7 @@ export class FormService {
             
             // Create the form first
             const form = this.formRepository.create({
+              invoiceNumber: createFormDto.invoiceNumber,
               formType: createFormDto.formType,
               otherAddress: createFormDto.otherAddress,
               returnable: createFormDto.returnable,

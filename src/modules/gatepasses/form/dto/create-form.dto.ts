@@ -36,6 +36,10 @@ export class CreateFormDto{
     @IsString()
     requesterName: string;
 
+    @IsString()
+    @IsOptional()
+    invoiceNumber?: string;
+    
     @IsDateString()
     @IsOptional()
     dateofReturn?: string;
